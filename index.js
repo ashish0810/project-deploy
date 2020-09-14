@@ -26,7 +26,13 @@ const session = expressSession({
 app.use(session);
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.engine('handlebars', exphbs());
+app.engine('handlebars', exphbs({
+  defaultLayout: "main",
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  }
+}));
 app.set('view engine', 'handlebars');
 
 app.use(passport.initialize());

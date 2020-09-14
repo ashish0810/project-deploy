@@ -1,32 +1,31 @@
 const router = require('express').Router();
 const isLoggedIn = require('../utils/isLoggedIn');
-const Project = require('../models/project');
+const ProjectManager = require('../utils/projectManager');
 
-router.get('/api/projects', isLoggedIn, function(req,res) {
+router.get('/api/projects', isLoggedIn, async function(req,res) {
     console.log('Retreiving projects');
-    Project.find(function (err, docs) {
-        res.status(200).json(docs);
-    });
+    var projects = await ProjectManager.getAll();
+    res.status(200).json(projects);
 });
 
-router.post('/api/projects', isLoggedIn, function(req,res) {
-    console.log('Adding new project...');
-    var p = new Project();
-    p.name = req.body.name;
-    p.repository = req.body.repository;
-    p.path = req.body.path;
-    p.deployCommand = req.body.deployCommand;
-    p.keepUpToDate = req.body.keepUpToDate;
-    p.save(function (err) {
-        if (err) {
-            console.log('Fail');
-            console.error(err);
-            res.status(400).end();
-        } else {
-            console.log('Success');
-            res.status(200).end();
-        }
-    });
+router.post('/api/projects', isLoggedIn, async function(req,res) {
+    console.log('Adding new project');
+    var r = await ProjectManager.addProject(req.body);
+    res.redirect('/');
 });
+
+router.post('/api/projects/edit', isLoggedIn, async function(req,res) {
+    console.log('Editing project');
+    var r = await ProjectManager.editProject(req.body);
+    res.redirect('/');
+});
+
+router.post('/api/projects/delete', isLoggedIn, async function(req,res) {
+    console.log('Deleteing project');
+    if (req.body.confirm) {
+        var r = await ProjectManager.deleteProject(req.body.name);
+    }
+    res.redirect('/');
+})
 
 module.exports = router;
