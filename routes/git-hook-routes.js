@@ -20,7 +20,7 @@ router.post('/hook', async function(req, res) {
     var project = await ProjectManager.getProject(url);
 
     ProjectManager.fetch(project);
-    if (project.keepUpToDate) {
+    if (project.keepUpToDate && project.deployCommand != "") {
         ProjectManager.deploy(project);
     }
 });

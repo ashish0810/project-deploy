@@ -12,21 +12,21 @@ const ProjectManager =  {
     fetch(project) {
         console.log('Pulling latest changes to repository');
         var cmd = `cd ${project.path} && git pull`;
-        console.log(cmd);
+        // console.log(cmd);
         var stdout = execSync(cmd);
-        console.log(`stdout: ${stdout}`);
-        console.log(`${cmd} finished`);
+        // console.log(`stdout: ${stdout}`);
+        // console.log(`${cmd} finished`);
     },
 
     deploy(project) {
         console.log('Deploying latest changes to repository');
-        var cmd = `cd ${project.path} && ls`;
-        console.log(cmd);
+        var cmd = `cd ${project.path} && ${project.deployCommand}`;
+        // console.log(cmd);
         var stdout = execSync(cmd);
-        console.log(`stdout: ${stdout}`);
+        // console.log(`stdout: ${stdout}`);
         project.lastUpdate = new Date();
         project.save();
-        console.log(`${cmd} finished`);
+        // console.log(`${cmd} finished`);
     },
 }
 
