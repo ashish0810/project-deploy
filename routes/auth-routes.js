@@ -4,7 +4,7 @@ const router = require('express').Router();
 
 router.post('/register', function(req, res, next) {
     console.log('Registering new user');
-    User.register(new User({username: req.body.username}), req.body.password, function(err) {
+    User.register(new User({ username: req.body.username, name: req.body.name }), req.body.password, function(err) {
         if (err) {
             console.log('error while registering', err);
             return next(err);

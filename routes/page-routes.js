@@ -13,7 +13,7 @@ router.get('/register', function(req, res) {
 router.get('/', isLoggedIn, async function(req, res) {
     const projects = await ProjectManager.getAll();
     res.render('home', {
-        user: req.user.username,
+        user: req.user.name,
         projects: projects
     });
 });
